@@ -2,10 +2,10 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import Todo from './Todo';
-import { getTodos } from '../redux/selectors';
+import { getTodosByActiveFilter } from '../redux/selectors';
 
 function TodoList() {
-  const todos = useSelector(getTodos);
+  const todos = useSelector(getTodosByActiveFilter);
   return (
     <div>
       {todos.map(todo => <Todo key={todo.id} {...todo} />)}
