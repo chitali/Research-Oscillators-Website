@@ -32,7 +32,7 @@ function App() {
       <h1>Todos ({activeTodoCount} active)</h1>
       <VisibilityFilterButtons />
       <AddTodo />
-      <TodoList todos={todos} />
+      <TodoList />
     </div>
   );
 }

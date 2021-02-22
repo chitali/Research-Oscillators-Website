@@ -1,5 +1,6 @@
 import { ADD_TODO, TOGGLE_TODO } from './actions';
 
+
 let currId = 0;
 function todosReducer(state = [], action) {
   switch (action.type) {
@@ -22,4 +23,18 @@ function todosReducer(state = [], action) {
     default:
       return state;
   }
+}
+
+/*
+ * {
+ *   todos: [...],              // todosReducer()
+ *   visibilityFilter: "..."   // visibilityFilterReducer()
+ * }
+ */
+
+export default function rootReducer(state = {}, action) {
+  return {
+    todos: todosReducer(state.todos, action),
+    /* visibilityFilter: visibilityFilterReducer() */
+  };
 }
