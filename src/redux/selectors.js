@@ -21,3 +21,11 @@ export function getTodosByActiveFilter(state) {
 export function getVisibilityFilter(state) {
   return state.visibilityFilter;
 }
+
+export function getActiveTodoCount(state) {
+  const todos = getTodos(state);
+  return todos.reduce(
+    (count, todo) => todo.completed ? count : count + 1,
+    0
+  );
+}

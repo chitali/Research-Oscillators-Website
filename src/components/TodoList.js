@@ -14,3 +14,5 @@ function TodoList() {
 }
 
 export default TodoList;
+
+export const CONST_VALUE = "const";
