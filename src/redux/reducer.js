@@ -1,62 +1,52 @@
-import { combineReducers } from 'redux';
+import {AUDIO, CHANGE_FREQUENCY, CHANGE_VOLUME, INIT_OSCILLATORS} from './actions'
 
-import {
-  ADD_TODO,
-  TOGGLE_TODO,
-  SET_VISIBILITY_FILTER,
-  VisibilityFilters
-} from './actions';
+function oscillatorsReducer(state = [], action){
+    switch(action.type){
+        case INIT_OSCILLATORS:
+            return [
+                ...state,
+                {
+                    id: action.oscillator.id,
+                    freq: action.oscillator.freq,
+                    vol: action.oscillator.vol,
+                    osc: action.oscillator.osc,
+                    instrument: action.oscillator.instrument
+                }
+            ];
 
-let currId = 0;
-function todosReducer(state = [], action) {
-  switch (action.type) {
-    case ADD_TODO:
-      return [
-        {
-          text: action.text,
-          completed: false,
-          id: ++currId
-        },
-        ...state
-      ];
-    case TOGGLE_TODO:
-      return state.map(todo => (
-        todo.id === action.id ? {
-          ...todo,
-          completed: !todo.completed
-        } : todo
-      ));
-    default:
-      return state;
-  }
+        case CHANGE_FREQUENCY:
+            var count = 1;
+            return state.map(oscillator =>(
+                oscillator.instrument === action.instrument ? {
+                    ...oscillator,
+                    freq: action.amount * count++
+                } : oscillator                    
+            ));
+
+        case CHANGE_VOLUME:
+            return state.map(oscillator =>(
+                oscillator.id === action.id ? {
+                    ...oscillator,
+                    vol: action.amount
+                } : oscillator
+            ));
+
+        case AUDIO:
+            return state.map(oscillator =>(
+                oscillator.id === action.id ? {
+                    ...oscillator,
+                    osc: action.osc
+                } : oscillator
+            ));
+
+        default:
+            return state;
+    }
+
 }
 
-function visibilityFilterReducer(state = VisibilityFilters.SHOW_ALL, action) {
-  switch (action.type) {
-    // case ADD_TODO:
-    case SET_VISIBILITY_FILTER:
-      return action.filter;
-    default:
-      return state;
-  }
+export default function rootReducer(state = {}, action){
+    return {
+        oscillators: oscillatorsReducer(state.oscillators, action)
+    };
 }
-
-/*
- * {
- *   todos: [...],              // todosReducer()
- *   visibilityFilter: "..."   // visibilityFilterReducer()
- * }
- */
-
-// export default function rootReducer(state = {}, action) {
-//   return {
-//     todos: todosReducer(state.todos, action),
-//     visibilityFilter: visibilityFilterReducer(state.visibilityFilter, action)
-//   };
-// }
-
-const rootReducer = combineReducers({
-  todos: todosReducer,
-  visibilityFilter: visibilityFilterReducer
-});
-export default rootReducer;

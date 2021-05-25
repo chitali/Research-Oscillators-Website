@@ -1,44 +1,34 @@
-export const ADD_TODO = 'ADD_TODO';
-export const TOGGLE_TODO = 'TOGGLE_TODO';
-export const SET_VISIBILITY_FILTER = 'SET_VISIBILITY_FILTER';
+export const CHANGE_FREQUENCY = 'CHANGE_FREQUENCY';
+export const CHANGE_VOLUME = 'CHANGE_VOLUME';
+export const INIT_OSCILLATORS = 'INIT_OSCILLATORS';
+export const AUDIO = 'AUDIO';
 
-export const VisibilityFilters = {
-  SHOW_ALL: 'SHOW_ALL',
-  SHOW_COMPLETED: 'SHOW_COMPLETED',
-  SHOW_ACTIVE: 'SHOW_ACTIVE'
-};
+export function initOscillators(oscillator){
+    return{
+        type: INIT_OSCILLATORS,
+        oscillator
+    }
+}
 
-/*
- * ADD_TODO action
- * {
- *   type: ADD_TODO,
- *   text: "Finish todo app"
- * }
- */
- export function addTodo(text) {
-   return { type: ADD_TODO, text };
- }
+export function changeVolume(amount, id){
+    return{
+        type: CHANGE_VOLUME,
+        amount: amount,
+        id
+    }
+}
+export function audio(osc, id){
+    return{
+        type: AUDIO,
+        osc: osc,
+        id
+    }
+}
 
-
- /*
-  * TOGGLE_TODO action
-  * {
-  *   type: TOGGLE_TODO,
-  *   id: 3
-  * }
-  */
-  export function toggleTodo(id) {
-    return { type: TOGGLE_TODO, id };
-  }
-
-
-  /*
-   * SET_VISIBILITY_FILTER action
-   * {
-   *   type: SET_VISIBILITY_FILTER,
-   *   filter: SHOW_ALL
-   * }
-   */
-   export function setVisibilityFilter(filter) {
-     return { type: SET_VISIBILITY_FILTER, filter };
-   }
+export function changeFrequency(amount, instrument){
+    return{
+        type: CHANGE_FREQUENCY,
+        amount: amount,
+        instrument
+    }
+}
