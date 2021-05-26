@@ -1,4 +1,5 @@
-import {AUDIO, CHANGE_FREQUENCY, CHANGE_VOLUME, INIT_OSCILLATORS} from './actions'
+import { combineReducers } from 'redux';
+import {AUDIO, CHANGE_FREQUENCY, CHANGE_VOLUME, INIT_OSCILLATORS, REMOVE_OSCILLATOR, CHANGE_ALL_VOLUME, INSTRUMENT_PERCENT} from './actions'
 
 function oscillatorsReducer(state = [], action){
     switch(action.type){
@@ -13,6 +14,9 @@ function oscillatorsReducer(state = [], action){
                     instrument: action.oscillator.instrument
                 }
             ];
+        
+        case REMOVE_OSCILLATOR:
+            return state.filter(oscillator => oscillator.id !== action.id);
 
         case CHANGE_FREQUENCY:
             var count = 1;
@@ -31,6 +35,14 @@ function oscillatorsReducer(state = [], action){
                 } : oscillator
             ));
 
+        case CHANGE_ALL_VOLUME:
+            return state.map(oscillator =>(
+                {
+                    ...oscillator,
+                    vol: oscillator.vol + action.amount
+                }
+            ));
+
         case AUDIO:
             return state.map(oscillator =>(
                 oscillator.id === action.id ? {
@@ -45,8 +57,23 @@ function oscillatorsReducer(state = [], action){
 
 }
 
-export default function rootReducer(state = {}, action){
-    return {
-        oscillators: oscillatorsReducer(state.oscillators, action)
-    };
+function instrumentReducer(state=50, action){
+    switch(action.type){
+        case INSTRUMENT_PERCENT:
+            return action.percent;
+        default:
+            return state;
+    }
 }
+
+// export default function rootReducer(state = {}, action){
+//     return {
+//         oscillators: oscillatorsReducer(state.oscillators, action)
+//     };
+// }
+
+const rootReducer = combineReducers({
+    oscillators: oscillatorsReducer,
+    percent: instrumentReducer
+});
+export default rootReducer;

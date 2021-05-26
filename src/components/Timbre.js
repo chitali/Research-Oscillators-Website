@@ -3,18 +3,18 @@ import {css} from '@emotion/react'
 import { Slider } from '@material-ui/core';
 import {useState} from 'react';
 import {useSelector} from 'react-redux';
-import {getOscillators} from '../redux/selectors'
+import {getOscillators, getPercent} from '../redux/selectors'
 import {audio} from '../redux/actions'
 import {useDispatch} from 'react-redux'
+import {instrumentPercent} from '../redux/actions'
 
 function Timbre(){
     const oscData = useSelector(getOscillators);
-    const [percent, setPercent] = useState(50);
+    const percent = useSelector(getPercent);
     const dispatch = useDispatch();
 
     function playAudio(){
        for(var i = 0; i < oscData.length; i++){
-           console.log(oscData[i].osc)
            if(oscData[i].osc !== "undefined"){
                 oscData[i].osc.stop();
                 oscData[i].osc.disconnect();
@@ -42,7 +42,22 @@ function Timbre(){
     }
 
     return(
-        <div>
+        <div css = {css`
+            button{
+                border: 2px solid #3f51b5;
+                height: 32px;
+                width: 90%;
+                border-radius: 2px;
+                background-color:#eeee;
+                color:#3f51b5;
+                text-decoration: none;
+            }
+            button:hover{
+                background-color:#8f9ce3;
+                border: 2px solid #3f51b5;
+                color:white;
+            }; 
+        `}>
             <p css= {css`float:left;`}>Instrument 1:  </p>
             <p css= {css`float:left; margin-left: 7px; color:#3f51b5; font-weight:400;`}>{percent}%</p>
             <p css= {css`float:right; margin-left: 7px; color:#3f51b5; font-weight:400;`}>{100-percent}%</p>
@@ -52,7 +67,10 @@ function Timbre(){
             min={0}
             max={100}
             valueLabelDisplay="auto"
-            onChange={(event, v) => {setPercent(v)}}
+            onChange={(event, v) => {
+                const changePercent = instrumentPercent(v);
+                dispatch(changePercent);
+            }}
             /> 
         {oscData[0].osc != "undefined" ? <div css= {css`text-align:center;`}><button onClick={playAudio}>Pause</button></div> : <div css= {css`text-align:center;`}><button onClick={playAudio}>Play</button></div> } 
         </div>

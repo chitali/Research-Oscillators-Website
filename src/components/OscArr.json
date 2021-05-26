@@ -8,64 +8,64 @@
     },
     {
         "id": 1,
-        "freq": 440,
-        "vol": -0.5,
-        "osc": "undefined",
-        "instrument": 1
-    },
-    {
-        "id": 2,
-        "freq": 660,
-        "vol": -0.75,
-        "osc": "undefined",
-        "instrument": 1
-    },
-    {
-        "id": 3,
-        "freq": 880,
-        "vol": -0.875,
-        "osc": "undefined",
-        "instrument": 1
-    },
-    {
-        "id": 4,
-        "freq": 1100,
-        "vol": -0.9375,
-        "osc": "undefined",
-        "instrument": 1
-    },
-    {
-        "id": 5,
         "freq": 220,
         "vol": 0,
         "osc": "undefined",
         "instrument": 2
     },
     {
-        "id": 6,
+        "id": 2,
+        "freq": 440,
+        "vol": -0.5,
+        "osc": "undefined",
+        "instrument": 1
+    },
+    {
+        "id": 3,
         "freq": 440,
         "vol": -0.5,
         "osc": "undefined",
         "instrument": 2
     },
     {
-        "id": 7,
+        "id": 4,
+        "freq": 660,
+        "vol": -0.75,
+        "osc": "undefined",
+        "instrument": 1
+    },
+    {
+        "id": 5,
         "freq": 660,
         "vol": -0.75,
         "osc": "undefined",
         "instrument": 2
     },
     {
-        "id": 8,
+        "id": 6,
+        "freq": 880,
+        "vol": -0.875,
+        "osc": "undefined",
+        "instrument": 1
+    },
+    {
+        "id": 7,
         "freq": 880,
         "vol": -0.875,
         "osc": "undefined",
         "instrument": 2
     },
     {
+        "id": 8,
+        "freq": 1100,
+        "vol": -0.938,
+        "osc": "undefined",
+        "instrument": 1
+    },
+    {
         "id": 9,
         "freq": 1100,
-        "vol": -0.9375,
+        "vol": -0.938,
         "osc": "undefined",
         "instrument": 2
     }

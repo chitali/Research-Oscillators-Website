@@ -14,6 +14,9 @@ const globalStyles = css`
     h1, h2, h3, h4, h5{
       text-align: center;
     }
+    button{
+      font-family: 'Source Sans Pro', sans-serif;
+    }
   }
 
 `;
