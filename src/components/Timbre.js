@@ -27,9 +27,9 @@ function Timbre(){
         var gainNode = ctxs.createGain();
         osc.connect(gainNode);
         gainNode.connect(ctxs.destination)
-        if(oscData[i].instrument === 1)
+        if(oscData[i].instrument === 1){
             gainNode.gain.value = -1 + (oscData[i].vol +1) * (p/100);
-        else{
+        }else{
             gainNode.gain.value = -1 + (oscData[i].vol +1) *  ((100 - p)/100);
         }
         osc.frequency.value = oscData[i].freq;
@@ -87,7 +87,6 @@ function Timbre(){
                 const changePercent = instrumentPercent(v);
                 dispatch(changePercent);                
                 if(oscData[0].osc !== "undefined"){
-                    console.log("called", percent," ", v)
                     sliderChangeAudio(v);
                 }
             }}

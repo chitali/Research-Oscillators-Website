@@ -27,10 +27,11 @@ export function changeVolume(amount, id){
     }
 }
 
-export function changeAllVolume(amount){
+export function changeAllVolume(amount, instrument){
     return{
         type: CHANGE_ALL_VOLUME,
-        amount: amount
+        amount: amount,
+        instrument
     }
 }
 

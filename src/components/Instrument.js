@@ -3,6 +3,7 @@ import {css} from '@emotion/react'
 import {useSelector} from 'react-redux'
 import OscVolume from './OscVolume'
 import MasterFreq from './MasterFreq'
+import MasterVol from './MasterVol'
 import Timbre from './Timbre'
 import {getOscillators, getPercent} from '../redux/selectors'
 import {useDispatch} from 'react-redux'
@@ -18,9 +19,10 @@ function Instrument(){
            if(oscData[i].instrument === instrument){
                var volume = ((1+oscData[i].vol)/2) -1;
                var newOsc = {
-                "id": oscData[oscData.length-1].id + 1,
+                "id":oscData[oscData.length-1].id +1,
                 "freq": oscData[i].freq * 2,
-                "vol": parseFloat(volume.toFixed(3)),
+                "vol": parseFloat(volume.toFixed(3)) + oscData[i].masterVol,
+                "masterVol": oscData[i].masterVol,
                 "osc": "undefined",
                 "instrument": instrument
                 }
@@ -33,16 +35,17 @@ function Instrument(){
                     osc.connect(gainNode);
                     gainNode.connect(ctxs.destination)
                     if(instrument === 1)
-                    gainNode.gain.value = -1 + (oscData[i].vol +1) * (percent/100);
+                    gainNode.gain.value = -1 + (newOsc.vol +1) * (percent/100);
                     else{
-                        gainNode.gain.value = -1 + (oscData[i].vol +1) *  ((100 - percent)/100);
+                        gainNode.gain.value = -1 + (newOsc.vol +1) *  ((100 - percent)/100);
                     }
-                    osc.frequency.value = oscData[i].freq;
+                    osc.frequency.value = newOsc.freq;
                     osc.type = 'sine';
                     osc.connect(ctxs.destination);
                     osc.start();
-                    const addOsc = audio(osc, newOsc.id );
-                    dispatch(addOsc);  
+                    console.log("New", newOsc.id, "Freq:",osc.frequency.value, "Vol:", gainNode.gain.value);
+                    const addAudio = audio(osc, newOsc.id );
+                    dispatch(addAudio);  
                 }
                 return;
            } 
@@ -102,6 +105,7 @@ function Instrument(){
             <div css ={instrumentContainer}>
                 <h2> Instrument 1</h2>
                 <MasterFreq {...oscData[0]}/>
+                <MasterVol instrument ={1} />
                 <div> Frequencies</div>
                 <div css={css`display:flex;flex-wrap: wrap;`}>
                     {oscData.map(osc => 

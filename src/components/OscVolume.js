@@ -29,15 +29,16 @@ function OscVolume({freq, vol, id, osc, instrument}){
                         osc.disconnect();
                         const removeOsc = audio("undefined", id);
                         dispatch(removeOsc);
+
                         var ctxs = new AudioContext();
                         var newOsc = ctxs.createOscillator();
                         var gainNode = ctxs.createGain();
                         newOsc.connect(gainNode);
                         gainNode.connect(ctxs.destination)
                         if(instrument === 1)
-                        gainNode.gain.value = -1 + (vol +1) * (percent/100);
+                        gainNode.gain.value = -1 + (v +1) * (percent/100);
                         else{
-                            gainNode.gain.value = -1 + (vol +1) *  ((100 - percent)/100);
+                            gainNode.gain.value = -1 + (v +1) *  ((100 - percent)/100);
                         }
                         newOsc.frequency.value = freq;
                         newOsc.type = 'sine';
@@ -49,7 +50,7 @@ function OscVolume({freq, vol, id, osc, instrument}){
                 }}
                 /> 
             </div>
-            <div css= {css`width: auto; justify-content:center; text-align:center; color:#3f51b5;`}>{vol}</div>
+            <div css= {css`width: auto; justify-content:center; text-align:center; color:#3f51b5;`}>{parseFloat(vol.toFixed(3))}</div>
         </div>
     )
 

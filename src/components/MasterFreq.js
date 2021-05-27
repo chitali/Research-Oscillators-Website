@@ -37,10 +37,11 @@ function MasterFreq({freq, instrument}){
     }
 
     function playNewAudio(f){
+        var count = 1;
         for(var i = 0; i < oscData.length; i++){
             if(oscData[i].instrument === instrument){
                 stopOsc(i);
-                playOsc(i,f *(i+1));
+                playOsc(i,f *count++);
             }
             
         } 

@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 import {AUDIO, CHANGE_FREQUENCY, CHANGE_VOLUME, INIT_OSCILLATORS, REMOVE_OSCILLATOR, CHANGE_ALL_VOLUME, INSTRUMENT_PERCENT} from './actions'
 
+
 function oscillatorsReducer(state = [], action){
     switch(action.type){
         case INIT_OSCILLATORS:
@@ -10,6 +11,7 @@ function oscillatorsReducer(state = [], action){
                     id: action.oscillator.id,
                     freq: action.oscillator.freq,
                     vol: action.oscillator.vol,
+                    masterVol: action.oscillator.masterVol,
                     osc: action.oscillator.osc,
                     instrument: action.oscillator.instrument
                 }
@@ -37,10 +39,11 @@ function oscillatorsReducer(state = [], action){
 
         case CHANGE_ALL_VOLUME:
             return state.map(oscillator =>(
-                {
+                oscillator.instrument === action.instrument ? {
                     ...oscillator,
-                    vol: oscillator.vol + action.amount
-                }
+                    vol: (oscillator.vol - oscillator.masterVol + action.amount) > 1 ? 1: (oscillator.vol - oscillator.masterVol + action.amount < -1) ? -1 : oscillator.vol - oscillator.masterVol + action.amount,
+                    masterVol: action.amount,  
+                } : oscillator                    
             ));
 
         case AUDIO:
