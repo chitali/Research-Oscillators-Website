@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import {css} from '@emotion/react'
 import { Slider } from '@material-ui/core';
-import {useState} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import {useSelector} from 'react-redux';
 import {getOscillators, getPercent} from '../redux/selectors'
 import {audio} from '../redux/actions'
@@ -10,35 +10,51 @@ import {instrumentPercent} from '../redux/actions'
 
 function Timbre(){
     const oscData = useSelector(getOscillators);
-    const percent = useSelector(getPercent);
+    var percent = useSelector(getPercent);
     const dispatch = useDispatch();
+    var timeout;
 
+    function stopOsc(i){
+        oscData[i].osc.stop();
+        oscData[i].osc.disconnect();
+        const removeOsc = audio("undefined", oscData[i].id );
+        dispatch(removeOsc);
+    }
+
+    function playOsc(i, p){
+        var ctxs = new AudioContext();
+        var osc = ctxs.createOscillator();
+        var gainNode = ctxs.createGain();
+        osc.connect(gainNode);
+        gainNode.connect(ctxs.destination)
+        if(oscData[i].instrument === 1)
+            gainNode.gain.value = -1 + (oscData[i].vol +1) * (p/100);
+        else{
+            gainNode.gain.value = -1 + (oscData[i].vol +1) *  ((100 - p)/100);
+        }
+        osc.frequency.value = oscData[i].freq;
+        osc.type = 'sine';
+        osc.connect(ctxs.destination);
+        osc.start();
+        const addOsc = audio(osc, oscData[i].id );
+        dispatch(addOsc);
+    }
+    
     function playAudio(){
        for(var i = 0; i < oscData.length; i++){
            if(oscData[i].osc !== "undefined"){
-                oscData[i].osc.stop();
-                oscData[i].osc.disconnect();
-                const removeOsc = audio("undefined", oscData[i].id );
-                dispatch(removeOsc);
+              stopOsc(i); 
            }else{
-                var ctxs = new AudioContext();
-                var osc = ctxs.createOscillator();
-                var gainNode = ctxs.createGain();
-                osc.connect(gainNode);
-                gainNode.connect(ctxs.destination)
-                if(oscData[i].instrument === 1)
-                gainNode.gain.value = -1 + (oscData[i].vol +1) * (percent/100);
-                else{
-                    gainNode.gain.value = -1 + (oscData[i].vol +1) *  ((100 - percent)/100);
-                }
-                osc.frequency.value = oscData[i].freq;
-                osc.type = 'sine';
-                osc.connect(ctxs.destination);
-                osc.start();
-                const addOsc = audio(osc, oscData[i].id );
-                dispatch(addOsc); 
+               playOsc(i, percent);
            }
        }
+    }
+
+    function sliderChangeAudio(per){
+        for(var i = 0; i < oscData.length; i++){
+            stopOsc(i);
+            playOsc(i, per);
+        }
     }
 
     return(
@@ -69,10 +85,14 @@ function Timbre(){
             valueLabelDisplay="auto"
             onChange={(event, v) => {
                 const changePercent = instrumentPercent(v);
-                dispatch(changePercent);
+                dispatch(changePercent);                
+                if(oscData[0].osc !== "undefined"){
+                    console.log("called", percent," ", v)
+                    sliderChangeAudio(v);
+                }
             }}
             /> 
-        {oscData[0].osc != "undefined" ? <div css= {css`text-align:center;`}><button onClick={playAudio}>Pause</button></div> : <div css= {css`text-align:center;`}><button onClick={playAudio}>Play</button></div> } 
+        {oscData[0].osc !== "undefined" ? <div css= {css`text-align:center;`}><button onClick={playAudio}>Pause</button></div> : <div css= {css`text-align:center;`}><button onClick={playAudio}>Play</button></div> } 
         </div>
     )
 

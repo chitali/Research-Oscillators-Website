@@ -3,6 +3,6 @@ import rootReducer from './reducer';
 const store = createStore(rootReducer);
 export default store;
 
-store.subscribe(() => {
-    console.log(store.getState())
-});
+// store.subscribe(() => {
+//     console.log(store.getState())
+// });

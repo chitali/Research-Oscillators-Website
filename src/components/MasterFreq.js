@@ -1,11 +1,51 @@
 import React from 'react';
 import { Slider, Input } from '@material-ui/core';
-import {changeFrequency} from '../redux/actions'
+import {changeFrequency, audio} from '../redux/actions'
 import {useDispatch} from 'react-redux'
-
+import {getOscillators, getPercent} from '../redux/selectors'
+import {useSelector} from 'react-redux'
 
 function MasterFreq({freq, instrument}){
+    const oscData = useSelector(getOscillators);
+    const percent = useSelector(getPercent);
     const dispatch = useDispatch();
+
+    function stopOsc(i){
+        oscData[i].osc.stop();
+        oscData[i].osc.disconnect();
+        const removeOsc = audio("undefined", oscData[i].id );
+        dispatch(removeOsc);
+    }
+
+    function playOsc(i, f){
+        var ctxs = new AudioContext();
+        var osc = ctxs.createOscillator();
+        var gainNode = ctxs.createGain();
+        osc.connect(gainNode);
+        gainNode.connect(ctxs.destination)
+        if(oscData[i].instrument === 1)
+            gainNode.gain.value = -1 + (oscData[i].vol +1) * (percent/100);
+        else{
+            gainNode.gain.value = -1 + (oscData[i].vol +1) *  ((100 - percent)/100);
+        }
+        osc.frequency.value = f;
+        osc.type = 'sine';
+        osc.connect(ctxs.destination);
+        osc.start();
+        const addOsc = audio(osc, oscData[i].id );
+        dispatch(addOsc);
+    }
+
+    function playNewAudio(f){
+        for(var i = 0; i < oscData.length; i++){
+            if(oscData[i].instrument === instrument){
+                stopOsc(i);
+                playOsc(i,f *(i+1));
+            }
+            
+        } 
+    }
+
     return(
         <div>
            Master Frequency:
@@ -24,6 +64,9 @@ function MasterFreq({freq, instrument}){
                 if(event.target.value > 1000) event.target.value = 1000;
                 const changeFreq = changeFrequency(Number(event.target.value), instrument);
                 dispatch(changeFreq);
+                if(oscData[0].osc !== "undefined"){
+                    playNewAudio(event.target.value);
+                }
             }}
             inputProps={{
               min: 0,
@@ -39,8 +82,12 @@ function MasterFreq({freq, instrument}){
             max={1000}
             valueLabelDisplay="auto"
             onChange={(event, v) => {
+
                 const changeFreq = changeFrequency(v, instrument);
                 dispatch(changeFreq);
+                if(oscData[0].osc !== "undefined"){
+                    playNewAudio(v);
+                }
             }}
             />  
         </div>
