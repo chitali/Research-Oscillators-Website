@@ -7,6 +7,8 @@ import {getOscillators, getPercent} from '../redux/selectors'
 import {audio} from '../redux/actions'
 import {useDispatch} from 'react-redux'
 import {instrumentPercent} from '../redux/actions'
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
 
 function Timbre(){
     const oscData = useSelector(getOscillators);
@@ -57,27 +59,44 @@ function Timbre(){
         }
     }
 
+    const muiTheme = createMuiTheme({
+        overrides:{
+          MuiSlider: {
+            thumb:{
+            color: "#d73f09"
+            },
+            track: {
+              color: '#d73f09'
+            },
+            rail: {
+              color: 'gray'
+            }
+          }
+      }
+      });
+
     return(
         <div css = {css`
             button{
-                border: 2px solid #3f51b5;
+                border: 2px solid #d73f09;
                 height: 32px;
                 width: 90%;
                 border-radius: 2px;
                 background-color:#eeee;
-                color:#3f51b5;
+                color:#d73f09;
                 text-decoration: none;
             }
             button:hover{
-                background-color:#8f9ce3;
-                border: 2px solid #3f51b5;
+                background-color:#e68a6a;
+                border: 2px solid #d73f09;
                 color:white;
             }; 
         `}>
             <p css= {css`float:left;`}>Instrument 1:  </p>
-            <p css= {css`float:left; margin-left: 7px; color:#3f51b5; font-weight:400;`}>{percent}%</p>
-            <p css= {css`float:right; margin-left: 7px; color:#3f51b5; font-weight:400;`}>{100-percent}%</p>
+            <p css= {css`float:left; margin-left: 7px; color:#d73f09; font-weight:400;`}>{percent}%</p>
+            <p css= {css`float:right; margin-left: 7px; color:#d73f09; font-weight:400;`}>{100-percent}%</p>
             <p css= {css`float:right;`}>Instrument 2: </p>
+            <ThemeProvider theme={muiTheme}>
             <Slider
             value={percent}
             min={0}
@@ -90,7 +109,8 @@ function Timbre(){
                     sliderChangeAudio(v);
                 }
             }}
-            /> 
+            />
+            </ThemeProvider> 
         {oscData[0].osc !== "undefined" ? <div css= {css`text-align:center;`}><button onClick={playAudio}>Pause</button></div> : <div css= {css`text-align:center;`}><button onClick={playAudio}>Play</button></div> } 
         </div>
     )

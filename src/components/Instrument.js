@@ -86,7 +86,7 @@ function Instrument(){
       border: none;
       padding: 5px;
       background-color:#eeee;
-      color:#3f51b5;
+      color:#d73f09;
       text-decoration: none;
     }
     button:hover{
@@ -115,13 +115,14 @@ function Instrument(){
                 </div>
                 <div> Volumes</div>
                 <div css={css`display:flex; justify-content:space-between;`}>
-                    <button onClick={() => addFrequency(1)}> + Add Frequency</button>
-                    <button onClick={() => removeFrequency(1)}> - Remove Frequency</button>
+                    <button onClick={() => addFrequency(1)}> + Add Haramonic</button>
+                    <button onClick={() => removeFrequency(1)}> - Remove Haramonic</button>
                 </div>
             </div>
             <div css ={instrumentContainer}>
                 <h2> Instrument 2</h2>
                 <MasterFreq {...oscData[1]}/>
+                <MasterVol instrument ={2} />
                 <div> Frequencies </div>
                 <div css={css`display:flex;flex-wrap: wrap;`}>
                     {oscData.map(osc => 
@@ -131,8 +132,8 @@ function Instrument(){
                 </div>
                 <div> Volumes</div>
                 <div css={css`display:flex; justify-content:space-between;`}>
-                    <button css={css`border-radius: 0px;`} onClick={() => addFrequency(2)}> + Add Frequency</button>
-                    <button onClick={() => removeFrequency(2)}> - Remove Frequency</button>
+                    <button css={css`border-radius: 0px;`} onClick={() => addFrequency(2)}> + Add Haramonic</button>
+                    <button onClick={() => removeFrequency(2)}> - Remove Haramonic</button>
                 </div>
             </div>
             <div css ={instrumentContainer}>

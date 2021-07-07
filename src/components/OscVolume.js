@@ -50,7 +50,7 @@ function OscVolume({freq, vol, id, osc, instrument}){
                 }}
                 /> 
             </div>
-            <div css= {css`width: auto; justify-content:center; text-align:center; color:#3f51b5;`}>{parseFloat(vol.toFixed(3))}</div>
+            <div css= {css`width: auto; justify-content:center; text-align:center; color:#d73f09;`}>{parseFloat(vol.toFixed(3))}</div>
         </div>
     )
 
