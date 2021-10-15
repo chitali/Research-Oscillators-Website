@@ -99,7 +99,6 @@ function Instrument(){
         max-width: 80em;
         width: calc(100% - 6em);
         margin: 0 auto;
-        margin-top: 20px;
         font-size: 1.15em;
         justify-content: center;
         `}>          
