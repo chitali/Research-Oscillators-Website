@@ -93,6 +93,18 @@ function Instrument(){
             color:black;
       } `;  
     return(
+        <div>
+           <h1> Custom Instrument</h1>
+           <div css={css`
+        max-width: 80em;
+        width: calc(100% - 6em);
+        margin: 0 auto;
+        margin-top: 20px;
+        font-size: 1.15em;
+        justify-content: center;
+        `}>          
+               Create your own instrument using oscillators! Use  Instrument 1 and 2 to add/remove harmonics, change frequencies, and change volume to create your own sound.  In the New Instrument Section, change the percent of each instrument and click play to hear your new instrument!
+            </div>  
         <div css={css`
         display: flex;
         flex-wrap: wrap;
@@ -115,8 +127,8 @@ function Instrument(){
                 </div>
                 <div> Volumes</div>
                 <div css={css`display:flex; justify-content:space-between;`}>
-                    <button onClick={() => addFrequency(1)}> + Add Haramonic</button>
-                    <button onClick={() => removeFrequency(1)}> - Remove Haramonic</button>
+                    <button onClick={() => addFrequency(1)}> + Add Harmonic</button>
+                    <button onClick={() => removeFrequency(1)}> - Remove Harmonic</button>
                 </div>
             </div>
             <div css ={instrumentContainer}>
@@ -140,6 +152,7 @@ function Instrument(){
                 <h2> New Instrument </h2>
                 <Timbre/>
             </div>
+        </div>
         </div>
     )
 
